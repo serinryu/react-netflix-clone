@@ -1,7 +1,6 @@
 function Home() {
   return(
     <>
-    "hi"
     </>
   )
 }
