@@ -1,6 +1,6 @@
 import { Link, useMatch } from "react-router-dom";
 import styled from "styled-components";
-import { motion, useViewportScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 const Nav = styled(motion.nav)`
@@ -98,11 +98,8 @@ function Header(){
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const toggleSearch = () => setSearchOpen((prev)=>!prev);
-  const { scrollYProgress } = useViewportScroll();
-  const backgroundColor = useTransform( scrollYProgress, [0, 300], ["rgba(0,0,0,0)", "rgba(0,0,0,0.8)"] );
-
   return(
-    <Nav style={{ backgroundColor }}>
+    <Nav>
       <Col>
         <Logo
           variants={logoVariants}
