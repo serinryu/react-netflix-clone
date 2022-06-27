@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { getMovies, IGetMoviesResult } from "../api";
 import styled from "styled-components";
 import { makeImagePath } from "../utils";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   background: black;
@@ -34,17 +35,42 @@ const Overview = styled.p`
   width: 50%;
 `;
 
+const Row = styled.div`
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, 1fr);
+  position: absolute;
+  width: 100%;
+`;
+
+const Box = styled.div`
+  background-color: white;
+  height: 200px;
+  color: red;
+  font-size: 66px;
+`;
+
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
+  const [index, setIndex] = useState(0);
   return(
     <Wrapper>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
+      <>
       <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
         <Title>{data?.results[0].title}</Title>
         <Overview>{data?.results[0].overview}</Overview>
       </Banner>
+
+      <Row key={index}>
+        {/* 숫자 예시 */}
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Box key={i}>{i}</Box>
+        ))}
+      </Row>
+      </>
       )}
     </Wrapper>
   )
