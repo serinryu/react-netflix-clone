@@ -76,13 +76,16 @@ const offset = 6;
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
   const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const incraseIndex = () => {
     if(data){
+    if(leaving) return; 
     const totalMovies = data.results.length - 1;
     const maxIndex = Math.floor(totalMovies / offset) - 1;
     setIndex((prev) => (prev === maxIndex ? 0 : prev + 1 )) //if index is maxIndex, again. (like infinite loop)
     }
   };
+  const toggleLeaving = () => setLeaving((prev) => !prev);
   return(
     <Wrapper>
       {isLoading ? (
@@ -97,7 +100,7 @@ function Home() {
       </Banner>
 
       <Slider>
-        <AnimatePresence>
+        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
           <Row
             variants={rowVariants}
             initial="hidden"
