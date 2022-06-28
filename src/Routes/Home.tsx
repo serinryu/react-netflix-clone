@@ -49,11 +49,14 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{bgPhoto: string}>`
   background-color: white;
   height: 200px;
   color: red;
   font-size: 66px;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
 `;
 
 const rowVariants = {
@@ -68,11 +71,18 @@ const rowVariants = {
   },
 };
 
+const offset = 6;
+
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
   const [index, setIndex] = useState(0);
-  const incraseIndex = () => setIndex((prev) => prev + 1);
-  console.log(index);
+  const incraseIndex = () => {
+    if(data){
+    const totalMovies = data.results.length - 1;
+    const maxIndex = Math.floor(totalMovies / offset) - 1;
+    setIndex((prev) => (prev === maxIndex ? 0 : prev + 1 )) //if index is maxIndex, again. (like infinite loop)
+    }
+  };
   return(
     <Wrapper>
       {isLoading ? (
@@ -96,9 +106,9 @@ function Home() {
             transition={{ type: "tween", duration: 1 }}
             key={index}
           >
-            {/* 숫자 예시 */}
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Box key={i}>{i}</Box>
+            {/* offset 만큼 slice된 배열. index 는 increaseIndex 할때마다 +1 */}
+            {data?.results.slice(offset * index, offset * index + offset).map((movie) => (
+              <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path, "w500")} />
             ))}
           </Row>
         </AnimatePresence>
