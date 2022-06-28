@@ -57,6 +57,12 @@ const Box = styled(motion.div)<{bgPhoto: string}>`
   background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
 const rowVariants = {
@@ -68,6 +74,21 @@ const rowVariants = {
   },
   exit: {
     x: -window.outerWidth - 10,
+  },
+};
+
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.5,
+      duaration: 0.3,
+      type: "tween",
+    },
   },
 };
 
@@ -109,9 +130,15 @@ function Home() {
             transition={{ type: "tween", duration: 1 }}
             key={index}
           >
-            {/* offset 만큼 slice된 배열. index 는 increaseIndex 할때마다 +1 */}
             {data?.results.slice(offset * index, offset * index + offset).map((movie) => (
-              <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path, "w500")} />
+              <Box 
+                key={movie.id} 
+                bgPhoto={makeImagePath(movie.backdrop_path, "w500")} 
+                whileHover="hover"
+                initial="normal"
+                variants={boxVariants}
+                transition={{ type: "tween" }}
+              />
             ))}
           </Row>
         </AnimatePresence>
