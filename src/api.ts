@@ -26,3 +26,10 @@ export function getMovies() {
     (response) => response.json()
   );
 }
+
+export function getSearchMovies(query: String){
+  return fetch(`${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`)
+  .then(
+    (response) => response.json()
+  );
+}
