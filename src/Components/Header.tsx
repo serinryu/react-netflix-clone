@@ -1,4 +1,4 @@
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -99,10 +99,11 @@ interface IForm {
 }
 
 function Header(){
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data:IForm) => {
-    console.log(data);
+    navigate(`/search?keyword=${data.keyword}`);
   }
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
