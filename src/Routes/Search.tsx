@@ -4,7 +4,6 @@ import { getSearchMovies, IGetMoviesResult } from "../api";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { makeImagePath } from "../utils";
-import { useState } from "react";
 
 const Loader = styled.div`
   height: 100vh;

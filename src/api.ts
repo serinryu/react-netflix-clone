@@ -7,6 +7,7 @@ interface IMovie {
   poster_path: string;
   title: string;
   overview: string;
+  name: string;
 }
 
 export interface IGetMoviesResult {
@@ -29,6 +30,13 @@ export function getMovies() {
 
 export function getSearchMovies(query: String){
   return fetch(`${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`)
+  .then(
+    (response) => response.json()
+  );
+}
+
+export function getTvShows(){
+  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&language=en-US`)
   .then(
     (response) => response.json()
   );
