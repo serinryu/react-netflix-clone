@@ -2,6 +2,7 @@ import { Link, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -50,7 +51,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   svg {
     height: 25px;
@@ -93,8 +94,16 @@ const logoVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header(){
   const [searchOpen, setSearchOpen] = useState(false);
+  const { register, handleSubmit } = useForm<IForm>();
+  const onValid = (data:IForm) => {
+    console.log(data);
+  }
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const toggleSearch = () => setSearchOpen((prev)=>!prev);
@@ -126,7 +135,7 @@ function Header(){
         </Items>
       </Col>
       <Col>
-      <Search>
+      <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -180 : 0 }}
@@ -142,6 +151,7 @@ function Header(){
             ></path>
           </motion.svg>
           <Input
+            {...register("keyword", { required:true, minLength: 2 })}
             transition={{ type: "linear" }}
             animate={{ scaleX: searchOpen ? 1 : 0 }}
             placeholder="Search for movie or tv show..."
