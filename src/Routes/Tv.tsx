@@ -3,6 +3,8 @@ import { getTvShows, IGetMoviesResult } from "../api";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { makeImagePath } from "../utils";
+import Detail from "../Components/Detail";
+import { useMatch, useNavigate } from "react-router-dom";
 
 const Loader = styled.div`
   height: 100vh;
@@ -41,6 +43,7 @@ const Box = styled(motion.div)<{bgphoto: string}>`
   height: 250px;
   color: red;
   font-size: 66px;
+  cursor: pointer;
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
@@ -90,13 +93,23 @@ const infoVariants = {
 };
 
 function Tv(){
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery<IGetMoviesResult>("tvshows", getTvShows);
+  const bigTvMatch = useMatch("/tv/:tvId");
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/tv/${movieId}`) 
+  };
+  const clickedMovie =
+    bigTvMatch?.params.tvId && 
+    data?.results.find((movie) => movie.id+"" === bigTvMatch?.params.tvId);
+  console.log(clickedMovie);
   return(
     <Wrapper>
       <Title>TV show</Title>
       { isLoading ? (
         <Loader>Loading..</Loader>
       ) : (
+      <>
       <Slider>
       <AnimatePresence initial={false} >
         <Row>
@@ -104,6 +117,7 @@ function Tv(){
             <Box 
               key={movie.id} 
               layoutId={movie.id + ""}
+              onClick={() => onBoxClicked(movie.id)}
               bgphoto={makeImagePath(movie.poster_path, "w500")} 
               whileHover="hover"
               initial="normal"
@@ -117,6 +131,14 @@ function Tv(){
         </Row>
       </AnimatePresence>
     </Slider>
+    <AnimatePresence>
+    {bigTvMatch && clickedMovie ? (
+      <Detail clickedData={clickedMovie}/>
+    ) : (
+      null
+    )}
+    </AnimatePresence>
+    </>
     )};
   </Wrapper>
   )

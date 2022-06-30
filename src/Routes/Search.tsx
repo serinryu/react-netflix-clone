@@ -46,12 +46,13 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{bgPhoto: string}>`
+const Box = styled(motion.div)<{bgphoto: string}>`
   background-color: white;
   height: 250px;
   color: red;
   font-size: 66px;
-  background-image: url(${(props) => props.bgPhoto});
+  cursor: pointer;
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   &:first-child {
@@ -117,7 +118,7 @@ function Search(){
             <Box 
               key={movie.id} 
               layoutId={movie.id + ""}
-              bgPhoto={makeImagePath(movie.backdrop_path, "w500")} 
+              bgphoto={makeImagePath(movie.poster_path, "w500")} 
               whileHover="hover"
               initial="normal"
               variants={boxVariants}
@@ -125,7 +126,7 @@ function Search(){
                 <Info variants={infoVariants}>
                   <h4>{movie.title}</h4>
                 </Info>
-              </Box>
+            </Box>
           ))}
         </Row>
       </AnimatePresence>
