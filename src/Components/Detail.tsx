@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
-import { makeImagePath } from "../utils";
 import { useNavigate, Link } from "react-router-dom";
 import { getTrailer, IGetTrailerResult, IMovie } from "../api";
 import { useQuery } from "react-query";
@@ -52,7 +51,7 @@ function Detail({clickedData}:IclickedMovie){
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const onOverlayClick = () => navigate(-1);
-  const { data, isLoading } = useQuery<IGetTrailerResult>("trailer", ()=>getTrailer());
+  const { data, isLoading } = useQuery<IGetTrailerResult>("trailer", ()=>getTrailer(clickedData.title||clickedData.name));
 
   return(
     <>

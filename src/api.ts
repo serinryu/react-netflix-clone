@@ -1,7 +1,5 @@
-const MOVIE_API_KEY = process.env.REACT_APP_MOVIE_API_KEY;
-const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+const MOVIE_API_KEY = process.env.MOVIE_API_KEY;
 const MOVIE_BASE_PATH = "https://api.themoviedb.org/3";
-const YOUTUBE_BASE_PATH = "https://www.googleapis.com/youtube/v3/search";
 
 export interface IMovie {
   id: number;
@@ -13,14 +11,7 @@ export interface IMovie {
 }
 
 export interface IGetMoviesResult {
-  dates: {
-    maximum: string;
-    minimum: string;
-  };
-  page: number;
   results: IMovie[];
-  total_pages: number;
-  total_results: number;
 }
 
 export interface IGetTrailerResult {
@@ -57,8 +48,8 @@ export function getTvShows(){
   );
 }
 
-export function getTrailer(){
-  return fetch(`${YOUTUBE_BASE_PATH}?part=snippet&q=Doctor Strange in the Multiverse of Madness&key=${YOUTUBE_API_KEY}&fields=items(id,snippet(channelId,title))&maxResults=1`)
+export function getTrailer(query: String){
+  return fetch(`/.netlify/functions/todo?query=${query}`)
   .then(
     (response) => response.json()
   );
