@@ -49,7 +49,7 @@ export function getTvShows(){
 }
 
 export function getTrailer(query: String){
-  return fetch(`/.netlify/functions/todo?query=${query}`)
+  return fetch(`/.netlify/functions/youtube?query=${query}`)
   .then(
     (response) => response.json()
   );
