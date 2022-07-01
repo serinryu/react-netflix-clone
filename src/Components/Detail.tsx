@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { motion, useViewportScroll } from "framer-motion";
 import { makeImagePath } from "../utils";
-import { useNavigate } from "react-router-dom";
-import { IMovie } from "../api";
+import { useNavigate, Link } from "react-router-dom";
+import { getTrailer, IGetTrailerResult, IMovie } from "../api";
+import { useQuery } from "react-query";
+import YouTube from 'react-youtube';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -23,13 +25,6 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
-`;
-
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  height: 400px;
 `;
 
 const BigTitle = styled.h3`
@@ -57,8 +52,9 @@ function Detail({clickedData}:IclickedMovie){
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const onOverlayClick = () => navigate(-1);
-  return(
+  const { data, isLoading } = useQuery<IGetTrailerResult>("trailer", ()=>getTrailer());
 
+  return(
     <>
     <Overlay
       onClick={onOverlayClick}
@@ -69,13 +65,18 @@ function Detail({clickedData}:IclickedMovie){
       layoutId={clickedData.id + ""}
       style={{ top: scrollY.get() + 100 }}
     >
-    <BigCover
-      style={{
-        backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-          clickedData.backdrop_path,
-          "w500"
-        )})`,
-      }}
+    <YouTube
+    //https://www.youtube.com/watch?v=${data.items.id.videoId}
+      videoId={data?.items[0].id.videoId}
+      opts={{
+        host: "https://www.youtube-nocookie.com",
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 1, //자동재생 O
+          rel: 0, 
+        },
+      }}      
     />
     <BigTitle>{clickedData.title||clickedData.name}</BigTitle>
     <BigOverview>{clickedData.overview}</BigOverview>

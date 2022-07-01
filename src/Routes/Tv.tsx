@@ -102,7 +102,6 @@ function Tv(){
   const clickedMovie =
     bigTvMatch?.params.tvId && 
     data?.results.find((movie) => movie.id+"" === bigTvMatch?.params.tvId);
-  console.log(clickedMovie);
   return(
     <Wrapper>
       <Title>TV show</Title>
