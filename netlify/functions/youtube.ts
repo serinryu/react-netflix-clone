@@ -1,9 +1,9 @@
 import fetch from "node-fetch";
-import { Handler } from "@netlify/functions";
+import { APIGatewayEvent, Context } from 'aws-lambda'
 
 const YOUTUBE_SEARCH_ENDPOINT = "https://www.googleapis.com/youtube/v3/search";
 
-const handler:Handler = async function (event, context) {
+export async function handler (event:APIGatewayEvent, context:Context) {
   console.log(event);
 
   const { query } : any = event.queryStringParameters || "";
@@ -22,5 +22,3 @@ const handler:Handler = async function (event, context) {
     body,
   };
 };
-
-export { handler };
