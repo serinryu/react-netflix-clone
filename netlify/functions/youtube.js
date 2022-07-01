@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const YOUTUBE_SEARCH_ENDPOINT = "https://www.googleapis.com/youtube/v3/search";
 
 exports.handler = async function (event, context) {
@@ -9,7 +10,7 @@ exports.handler = async function (event, context) {
 
     console.log(query);
     console.log(response);
-    
+
     const { statusCode, statusText, ok, headers } = response;
     const body = JSON.stringify(await response.json());
     return {
